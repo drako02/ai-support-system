@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import user from '/public/user.svg'
+
 interface Props{
     children?: React.ReactNode;
     itemKey?: number;
@@ -10,7 +13,7 @@ const Outgoing = ({children, itemKey}:Props) => {
                 <p>{children}</p>
             </div>
             <div className="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                <img src="" alt="My Avatar" className="w-8 h-8 rounded-full"/>
+                <Image src={user} alt="My Avatar" className="w-8 h-8 rounded-full"/>
             </div>
         </div>
     )

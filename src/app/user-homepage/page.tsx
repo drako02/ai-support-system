@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseConfig";
 import Outgoing from "@/components/Outgoing";
 import Incoming from "@/components/Incoming";
+import { logOut } from "@/hooks/useAuth";
 
 
 interface Message {
@@ -32,7 +33,8 @@ export default function Home() {
     inputRef.current?.focus();  // Refocus on input
 
     try {
-      const response = await axios.post<{ choices: { message: { role: string; content: string } }[] }>(        "/api/chat",
+      const response = await axios.post<{ choices: { message: { role: string; content: string } }[] }>(
+        "/api/chat",
         {
           messages: [
             { role: "system", content: "You are a helpful assistant." },
@@ -52,6 +54,11 @@ export default function Home() {
     
   };
 
+  const handleLogout = async () => {
+    await logOut();
+    router.push("/login");
+  }
+
 
   
 
@@ -64,14 +71,20 @@ export default function Home() {
   if (loading) return <div>...</div>;
 
   return (
-    <div className="flex-1">
+    <div className="h-[100%] flex flex-col justify-start items-center">
       {/* Chat Header */}
-      <div className="bg-white p-4 text-gray-700">
-        <h1 className="text-2xl font-semibold">Alice</h1>
+      <div className="flex justify-between w-[100%] bg-white p-4 text-gray-700 border-b border-gray-300">
+        <h1 className="text-2xl font-semibold">My Support</h1>
+        <button className="bg-black text-white font-bold py-2 px-4  rounded hover:bg-blue-600"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
       </div>
+      
 
       {/* Chat Messages */}
-      <div className="h-screen overflow-y-auto p-4 pb-36">
+      <div className="h-screen w-full overflow-y-auto p-4 pb-36">
         {messages.map((message, index) => (
           <div key={ index }>
             { message.sender === "user" ? (
@@ -84,7 +97,7 @@ export default function Home() {
       </div>
 
       {/* Chat Input */}
-      <div className="bg-white border-t border-gray-300 p-4 absolute bottom-0 w-3/4">
+      <div className="bg-white border-t border-gray-300 p-4 absolute bottom-0 w-full">
         <div className="flex items-center">
           <input
             ref={inputRef}

@@ -1,4 +1,4 @@
-import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from "firebase/auth";
 import { auth } from '../lib/firebaseConfig';
 
 const googleProvider = new GoogleAuthProvider();
@@ -31,5 +31,13 @@ export const signUpWithEmail = async (email: string, password: string) => {
         console.error("Email Sign-up Error", error);
         throw error;
      }
+}
+
+export const logOut = async () => {
+    try {
+        await signOut(auth);
+    } catch (error) {
+        console.error("Sign-out Error", error);
+    }
 }
 
